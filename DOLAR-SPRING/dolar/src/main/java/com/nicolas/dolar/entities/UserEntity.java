@@ -47,6 +47,9 @@ public class UserEntity {
     @Column(name = "facebook")
     private String facebook;
 
+    @Column(name = "register_day")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate registerDay;
 
     @Column(name = "lastlog")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

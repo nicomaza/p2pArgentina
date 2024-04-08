@@ -2,6 +2,7 @@ package com.nicolas.dolar.services.Impl;
 
 import com.nicolas.dolar.dtos.enums.owner;
 import com.nicolas.dolar.dtos.enums.StatusOrder;
+import com.nicolas.dolar.dtos.enums.typeReview;
 import com.nicolas.dolar.dtos.order.*;
 import com.nicolas.dolar.entities.OrderDetailEntity;
 import com.nicolas.dolar.entities.OrderEntity;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -210,6 +211,56 @@ public class OrderServiceImpl implements OrderService {
             String errorMessage = "Error al mapear OrderEntity a ResponseOrderDTO: " + e.getMessage();
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    @Override
+    public List<OrderForPublishDTO> listOrdersForPublish() {
+
+        List<OrderEntity> list = orderJpaRepository.findByStatus(StatusOrder.NEW);
+
+        // Mapear cada OrderEntity a OrdersPublicsDTO
+        List<OrderForPublishDTO> orderForPublishDTOList = list.stream()
+                .map(orderEntity -> {
+                    OrderForPublishDTO orderPublic = new OrderForPublishDTO();
+                    orderPublic.setDateInit(orderEntity.getDateInit());
+                    orderPublic.setTerms(orderEntity.getTerms());
+
+                    orderPublic.setAmount(orderEntity.getOrdersDetails().get(0).getAmount());
+                    orderPublic.setRate(orderEntity.getOrdersDetails().get(0).getRate());
+                    orderPublic.setCurrencyOrigin(orderEntity.getOrdersDetails().get(0).getCurrencyOrigin().toString());
+                    orderPublic.setCurrencyChange(orderEntity.getOrdersDetails().get(0).getCurrencyChange().toString());
+                    orderPublic.setOperationType(orderEntity.getOrdersDetails().get(0).getOperationType().toString());
+                    orderPublic.setPaymentMethod(orderEntity.getOrdersDetails().get(0).getPaymentMethod().toString());
+
+                    // Mapear los detalles del editor si es necesario
+                    if (orderEntity.getEditorEntity() != null) {
+                        orderPublic.setEditorName(orderEntity.getEditorEntity().getName());
+                        orderPublic.setEditorLastname(orderEntity.getEditorEntity().getLastname());
+                        orderPublic.setEditorPhoto("fotovacio");
+                        orderPublic.setEditorFacebook(orderEntity.getEditorEntity().getFacebook());
+                        orderPublic.setEditorLastLog(orderEntity.getEditorEntity().getLastlog());
+                        orderPublic.setEditorVerified(orderEntity.getEditorEntity().getVerified());
+
+                        orderPublic.setEditorOrdersCompletes(calculateOrdersCompletes(orderEntity.getEditorEntity().getIdUser(), orderEntity.getStatus()));
+                        orderPublic.setEditorRegisterDate(orderEntity.getEditorEntity().getRegisterDay());
+                        orderPublic.setEditorPositivesOrders(calculatePositiveOrders(orderEntity.getEditorEntity().getIdUser()));
+                        // Configurar otros campos del editor si es necesario
+                    }
+
+                    return orderPublic;
+                })
+                .collect(Collectors.toList());
+
+        return orderForPublishDTOList;
+    }
+
+    private int calculatePositiveOrders(Long idUser) {
+        Long count = orderJpaRepository.countNumberOfPositives(idUser, typeReview.POSITIVE);
+        return count.intValue();
+    }
+
+    private String calculateOrdersCompletes(Long userId, StatusOrder status) {
+        return orderJpaRepository.countCompletedOrdersByUserId(userId, StatusOrder.SUCCESS).toString();
     }
 
 

@@ -2,10 +2,7 @@ package com.nicolas.dolar.controller;
 
 import com.nicolas.dolar.dtos.common.ErrorApi;
 import com.nicolas.dolar.dtos.detailOrder.UpdateAmountRateRequest;
-import com.nicolas.dolar.dtos.order.FirstPublishDTO;
-import com.nicolas.dolar.dtos.order.ResponseOrderDTO;
-import com.nicolas.dolar.dtos.order.ReviewDTO;
-import com.nicolas.dolar.dtos.order.UpdateOrderRequestDTO;
+import com.nicolas.dolar.dtos.order.*;
 import com.nicolas.dolar.entities.OrderEntity;
 import com.nicolas.dolar.entities.UserEntity;
 import com.nicolas.dolar.services.OrderService;
@@ -56,7 +53,16 @@ public class OrderController {
                     .body(new ErrorApi(LocalDateTime.now().toString(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error obtener orden", ex.getMessage()));
         }
     }
-
+    @GetMapping("/getOrdersForPublish")
+    public ResponseEntity<Object> getOrderForPublish() {
+        try {
+            List<OrderForPublishDTO> ordersForPublish = orderService.listOrdersForPublish();
+            return ResponseEntity.ok(ordersForPublish);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorApi(LocalDateTime.now().toString(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error obtener orden a publicar", ex.getMessage()));
+        }
+    }
     @GetMapping("/getAllOrders")
     public ResponseEntity<Object> getAllOrders() {
         try {

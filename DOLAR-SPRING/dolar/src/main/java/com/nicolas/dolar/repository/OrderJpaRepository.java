@@ -1,5 +1,7 @@
 package com.nicolas.dolar.repository;
 
+import com.nicolas.dolar.dtos.enums.StatusOrder;
+import com.nicolas.dolar.dtos.enums.typeReview;
 import com.nicolas.dolar.entities.OrderEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,8 +19,21 @@ public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long> {
     Optional<OrderEntity> findOrderWithDetailsById(@Param("id") Long id);
 
 
+    @Query("SELECT o FROM OrderEntity o LEFT JOIN FETCH o.ordersDetails LEFT JOIN FETCH o.editorEntity WHERE o.status = :status")
+    List<OrderEntity> findByStatus(@Param("status") StatusOrder status);
+
+
+
     @EntityGraph(attributePaths = {"ordersDetails"}) // Carga los detalles de las órdenes
     List<OrderEntity> findAll();
+
+
+    @Query("SELECT COUNT(o) FROM OrderEntity o WHERE o.editorEntity.idUser = :userId AND o.status = :status")
+    Long countCompletedOrdersByUserId(@Param("userId") Long userId, @Param("status") StatusOrder status);
+
+    @Query("SELECT COUNT(o) FROM OrderEntity o WHERE o.editorEntity.idUser = :userId AND o.typeForEditor = :type")
+    Long countNumberOfPositives(@Param("userId") Long userId, @Param("type") typeReview type);
+
 
 
 }

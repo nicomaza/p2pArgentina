@@ -1,9 +1,6 @@
 package com.nicolas.dolar.services;
 
-import com.nicolas.dolar.dtos.order.FirstPublishDTO;
-import com.nicolas.dolar.dtos.order.ResponseOrderDTO;
-import com.nicolas.dolar.dtos.order.ReviewDTO;
-import com.nicolas.dolar.dtos.order.UpdateOrderRequestDTO;
+import com.nicolas.dolar.dtos.order.*;
 import com.nicolas.dolar.entities.OrderEntity;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,8 @@ public interface OrderService {
     ResponseOrderDTO updateTerms(UpdateOrderRequestDTO updateOrderRequestDTO);
     ResponseOrderDTO updateStatus(UpdateOrderRequestDTO updateOrderRequestDTO);
     ResponseOrderDTO updateCloseOrder(Long id);
+
+    List<OrderForPublishDTO> listOrdersForPublish();
 
 
 }
