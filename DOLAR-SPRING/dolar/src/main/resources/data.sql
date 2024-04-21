@@ -22,3 +22,27 @@ VALUES ('Sophia', 'Jones', '1970-03-05', true, 'sophia.jones@example.com', 12348
        ('Michael', 'Davis', '1988-12-20', false, 'michael.davis@example.com', 1234656789, 'michaeldavis', '2024-03-15', '2024-03-15 16:45:00');
 
 
+
+-- Insertar la orden en orderp2p
+INSERT INTO orderp2p (datetime_init, datetime_finish, status, terms, comm_foreditor, type_foreditor, comm_forclient, type_forclient, id_editor, id_client)
+VALUES ( '2024-04-08 09:00:00', '2024-04-08 12:00:00', 0, 'Términos y condiciones de la orden 1', 'Comentario para editor de la orden 1', 1, 'Comentario para cliente de la orden 1', 1, 1, 2);
+
+
+-- Insertar detalles de la orden en orderdetail
+INSERT INTO orderdetail (id_order, operation_type, currency_origin, currency_change, amount, rate, payment_method)
+VALUES (1, 1, 2, 1, 100, 1024, 2);
+
+-- Insertar la orden en orderp2p
+INSERT INTO orderp2p (datetime_init, datetime_finish, status, terms, comm_foreditor, type_foreditor, comm_forclient, type_forclient, id_editor, id_client)
+VALUES ('2024-04-10 11:00:00', '2024-04-10 15:00:00', 0, 'Términos y condiciones de la orden 3', 'Comentario para editor de la orden 3', 1, 'Comentario para cliente de la orden 3', 1, 3, 4);
+
+-- Insertar detalles de la orden en orderdetail
+INSERT INTO orderdetail (id_order, operation_type, currency_origin, currency_change, amount, rate, payment_method)
+VALUES (2, 1, 2, 1, 150, 1536, 2);
+-- Insertar la orden en orderp2p
+INSERT INTO orderp2p (datetime_init, datetime_finish, status, terms, comm_foreditor, type_foreditor, comm_forclient, type_forclient, id_editor, id_client)
+VALUES ('2024-04-10 11:00:00', '2024-04-10 15:00:00', 0, 'Términos y condiciones de la orden 3', 'Comentario para editor de la orden 3', 1, 'Comentario para cliente de la orden 3', 1, 3, 5);
+
+-- Insertar detalles de la orden en orderdetail
+INSERT INTO orderdetail (id_order, operation_type, currency_origin, currency_change, amount, rate, payment_method)
+VALUES (3, 0, 2, 1, 150, 1536, 2);

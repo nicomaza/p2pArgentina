@@ -1,6 +1,6 @@
 package com.nicolas.dolar.entities;
 
-import com.nicolas.dolar.dtos.enums.currency;
+import com.nicolas.dolar.dtos.enums.Currency;
 import com.nicolas.dolar.dtos.enums.PaymentMethod;
 import com.nicolas.dolar.dtos.enums.typePublish;
 import jakarta.persistence.*;
@@ -28,10 +28,10 @@ public class OrderDetailEntity {
     private typePublish operationType;
 
     @Column(name = "currency_origin")
-    private currency currencyOrigin;
+    private Currency currencyOrigin;
 
     @Column(name = "currency_change")
-    private currency currencyChange;
+    private Currency currencyChange;
 
     @Column(name = "amount")
     private Long amount;

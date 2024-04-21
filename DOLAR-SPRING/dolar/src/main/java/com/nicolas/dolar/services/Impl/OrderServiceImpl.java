@@ -13,11 +13,13 @@ import com.nicolas.dolar.repository.userJpaRepository;
 import com.nicolas.dolar.services.OrderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.hibernate.query.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -172,8 +174,8 @@ public class OrderServiceImpl implements OrderService {
     public ResponseOrderDTO updateStatus(UpdateOrderRequestDTO updateOrderRequestDTO) {
         OrderEntity order = orderJpaRepository.findOrderWithDetailsById(updateOrderRequestDTO.getIdOrder()).orElse(null);
 
-        if (updateOrderRequestDTO.getTerms() == null) {
-            throw new NoSuchElementException("No hay terminos escritos");
+        if (updateOrderRequestDTO.getStatus() == null) {
+            throw new NoSuchElementException("No hay estado escritos");
         }
 
         order.setStatus(updateOrderRequestDTO.getStatus());
@@ -253,6 +255,35 @@ public class OrderServiceImpl implements OrderService {
 
         return orderForPublishDTOList;
     }
+
+    @Override
+    public List<ordersActiveByUserDTO> ordersActiveByUser(Long id) {
+
+        List<OrderEntity> list = orderJpaRepository.ordersActiveByUser(StatusOrder.NEW, StatusOrder.PAUSED, id);
+
+        List<ordersActiveByUserDTO> orderForPublishDTOList = list.stream()
+                .map(orderEntity -> {
+                    ordersActiveByUserDTO orderPublic = new ordersActiveByUserDTO();
+                    orderPublic.setDateInit(orderEntity.getDateInit());
+                    orderPublic.setTerms(orderEntity.getTerms());
+                    orderPublic.setStatus(orderEntity.getStatus());
+                    orderPublic.setIdOrderp2p(orderEntity.getIdOrderp2p());
+
+                    orderPublic.setAmount(orderEntity.getOrdersDetails().get(0).getAmount());
+                    orderPublic.setRate(orderEntity.getOrdersDetails().get(0).getRate());
+                    orderPublic.setCurrencyOrigin(orderEntity.getOrdersDetails().get(0).getCurrencyOrigin().toString());
+                    orderPublic.setCurrencyChange(orderEntity.getOrdersDetails().get(0).getCurrencyChange().toString());
+                    orderPublic.setOperationType(orderEntity.getOrdersDetails().get(0).getOperationType().toString());
+                    orderPublic.setPaymentMethod(orderEntity.getOrdersDetails().get(0).getPaymentMethod().toString());
+
+
+                    return orderPublic;
+                })
+                .collect(Collectors.toList());
+
+        return orderForPublishDTOList;
+    }
+
 
     private int calculatePositiveOrders(Long idUser) {
         Long count = orderJpaRepository.countNumberOfPositives(idUser, typeReview.POSITIVE);

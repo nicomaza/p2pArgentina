@@ -22,6 +22,10 @@ public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long> {
     @Query("SELECT o FROM OrderEntity o LEFT JOIN FETCH o.ordersDetails LEFT JOIN FETCH o.editorEntity WHERE o.status = :status")
     List<OrderEntity> findByStatus(@Param("status") StatusOrder status);
 
+    @Query("SELECT o FROM OrderEntity o LEFT JOIN FETCH o.ordersDetails LEFT JOIN FETCH o.editorEntity WHERE (o.status = :status1 OR o.status = :status2) AND o.editorEntity.idUser = :id")
+    List<OrderEntity> ordersActiveByUser(@Param("status1") StatusOrder status1, @Param("status2") StatusOrder status2, @Param("id") Long id);
+
+
 
 
     @EntityGraph(attributePaths = {"ordersDetails"}) // Carga los detalles de las órdenes

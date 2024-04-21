@@ -21,10 +21,12 @@ public interface OrderService {
     OrderEntity addReview(ReviewDTO review);
 
     ResponseOrderDTO updateTerms(UpdateOrderRequestDTO updateOrderRequestDTO);
+
     ResponseOrderDTO updateStatus(UpdateOrderRequestDTO updateOrderRequestDTO);
+
     ResponseOrderDTO updateCloseOrder(Long id);
 
     List<OrderForPublishDTO> listOrdersForPublish();
 
-
+    List<ordersActiveByUserDTO> ordersActiveByUser(Long id);
 }

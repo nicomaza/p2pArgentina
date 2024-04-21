@@ -1,6 +1,7 @@
 package com.nicolas.dolar.services.Impl;
 
 import com.nicolas.dolar.dtos.detailOrder.UpdateAmountRateRequest;
+import com.nicolas.dolar.dtos.enums.Currency;
 import com.nicolas.dolar.dtos.order.ResponseOrderDTO;
 import com.nicolas.dolar.entities.OrderEntity;
 import com.nicolas.dolar.repository.OrderJpaRepository;
@@ -8,6 +9,9 @@ import com.nicolas.dolar.services.DetailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DetailOrderImpl implements DetailService {
@@ -63,5 +67,10 @@ public class DetailOrderImpl implements DetailService {
             String errorMessage = "Error al mapear OrderEntity a ResponseOrderDTO: " + e.getMessage();
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    @Override
+    public List<Currency> getCurrencyList() {
+        return Arrays.asList(com.nicolas.dolar.dtos.enums.Currency.values());
     }
 }

@@ -1,6 +1,6 @@
 package com.nicolas.dolar.dtos.order;
 
-import com.nicolas.dolar.dtos.enums.currency;
+import com.nicolas.dolar.dtos.enums.Currency;
 import com.nicolas.dolar.dtos.enums.PaymentMethod;
 import com.nicolas.dolar.dtos.enums.typePublish;
 import jakarta.validation.constraints.Min;
@@ -31,10 +31,10 @@ public class FirstPublishDTO {
     private Long amount;
 
     @NotNull
-    private currency currencyorigin;
+    private Currency currencyorigin;
 
     @NotNull
-    private currency currencyend;
+    private Currency currencyend;
 
     @NotNull
     private PaymentMethod paymentMethod;

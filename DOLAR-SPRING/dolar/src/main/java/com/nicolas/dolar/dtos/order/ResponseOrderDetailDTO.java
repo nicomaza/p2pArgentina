@@ -1,7 +1,7 @@
 package com.nicolas.dolar.dtos.order;
 
 import com.nicolas.dolar.dtos.enums.PaymentMethod;
-import com.nicolas.dolar.dtos.enums.currency;
+import com.nicolas.dolar.dtos.enums.Currency;
 import com.nicolas.dolar.dtos.enums.typePublish;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +18,8 @@ public class ResponseOrderDetailDTO {
     private Long idOrderDetail;
     private Long amount;
     private BigDecimal rate;
-    private currency currencyOrigin;
-    private currency currencyChange;
+    private Currency currencyOrigin;
+    private Currency currencyChange;
     private typePublish operationType;
     private PaymentMethod paymentMethod;
 }

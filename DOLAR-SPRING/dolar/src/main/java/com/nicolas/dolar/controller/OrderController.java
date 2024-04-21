@@ -63,6 +63,17 @@ public class OrderController {
                     .body(new ErrorApi(LocalDateTime.now().toString(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error obtener orden a publicar", ex.getMessage()));
         }
     }
+
+    @GetMapping("/getOrderActiveByUser/{id}")
+    public ResponseEntity<Object> getOrderActiveByUser(@PathVariable Long id) {
+        try {
+            List<ordersActiveByUserDTO> ordersForPublish = orderService.ordersActiveByUser(id);
+            return ResponseEntity.ok(ordersForPublish);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorApi(LocalDateTime.now().toString(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error obtener orden a publicar", ex.getMessage()));
+        }
+    }
     @GetMapping("/getAllOrders")
     public ResponseEntity<Object> getAllOrders() {
         try {

@@ -1,5 +1,5 @@
 package com.nicolas.dolar.dtos.enums;
 
-public enum currency {
+public enum Currency {
     USD,ARS,EUD
 }
