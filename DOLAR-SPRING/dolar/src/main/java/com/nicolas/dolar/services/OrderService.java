@@ -29,4 +29,6 @@ public interface OrderService {
     List<OrderForPublishDTO> listOrdersForPublish();
 
     List<ordersActiveByUserDTO> ordersActiveByUser(Long id);
+
+    List<ResponseOrderDTO> getAllOrdersByType(String type);
 }

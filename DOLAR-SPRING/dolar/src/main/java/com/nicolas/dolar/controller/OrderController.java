@@ -85,6 +85,17 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/getOrdersToBuyOrSell/")
+    public ResponseEntity<Object> getOrdersToBuyOrSell(@RequestParam String type) {
+        try {
+            List<ResponseOrderDTO> responseOrderDTO = orderService.getAllOrdersByType(type);
+            return ResponseEntity.ok(responseOrderDTO);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorApi(LocalDateTime.now().toString(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error obtener orden", ex.getMessage()));
+        }
+    }
+
     @PutMapping("/updateTerms")
     public ResponseEntity<Object> updateTerms(@RequestBody UpdateOrderRequestDTO request) {
         try {

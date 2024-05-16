@@ -2,6 +2,7 @@ package com.nicolas.dolar.services.Impl;
 
 import com.nicolas.dolar.dtos.enums.owner;
 import com.nicolas.dolar.dtos.enums.StatusOrder;
+import com.nicolas.dolar.dtos.enums.typePublish;
 import com.nicolas.dolar.dtos.enums.typeReview;
 import com.nicolas.dolar.dtos.order.*;
 import com.nicolas.dolar.entities.OrderDetailEntity;
@@ -282,6 +283,23 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
 
         return orderForPublishDTOList;
+    }
+
+    @Override
+    public List<ResponseOrderDTO> getAllOrdersByType(String type) {
+        List<OrderEntity> orders;
+
+        if(type.equals(typePublish.COMPRA.toString())){
+            orders = orderJpaRepository.findAllByType(typePublish.COMPRA);
+        }else {
+            orders = orderJpaRepository.findAllByType(typePublish.VENTA);
+
+        }
+
+        List<ResponseOrderDTO> responseOrderDTOs = orders.stream()
+                .map(order -> modelMapper.map(order, ResponseOrderDTO.class))
+                .collect(Collectors.toList());
+        return responseOrderDTOs;
     }
 
 
